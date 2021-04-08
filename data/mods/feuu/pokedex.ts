@@ -1,6 +1,5 @@
 export const Pokedex: {[k: string]: ModdedSpeciesData} = {
-
-	//Set 1
+	// Set 1
 	volquag: {
 		fusion: ['Volcanion', 'Quagsire'],
 		num: 1,
@@ -48,7 +47,7 @@ export const Pokedex: {[k: string]: ModdedSpeciesData} = {
 		weightkg: 69.7,
 	},
 	
-	//Set 2
+	// Set 2
 	flaant: {
 		fusion: ['Flapple', 'Durant'],
 		num: 6,
@@ -128,7 +127,7 @@ export const Pokedex: {[k: string]: ModdedSpeciesData} = {
 		weightkg: 213,
 	},
 	
-	//Set 3
+	// Set 3
 	pigapult: {
 		fusion: ['Pignite', 'Dragapult'],
 		num: 13,
@@ -219,7 +218,7 @@ export const Pokedex: {[k: string]: ModdedSpeciesData} = {
 		abilities: {0: "Concussion"},
 		weightkg: 476.1,
 	},
-	//slate 4
+	// slate 4
 	grimmlurk: {
 		fusion: ['Grimmsnarl', 'Golurk'],
 		num: 19,
@@ -265,7 +264,7 @@ export const Pokedex: {[k: string]: ModdedSpeciesData} = {
 		abilities: {0: "Doggy's Maw"},
 		weightkg: 130.5,
 	},
-	//slate 5
+	// slate 5
 	dongoro: {
 		fusion: ['Donphan', 'Pangoro'],
 		num: 24,
@@ -309,7 +308,7 @@ export const Pokedex: {[k: string]: ModdedSpeciesData} = {
 		battleOnly: "Grousle",
 	},
 	
-	//slate 6
+	// slate 6
 	corveot: {
 		fusion: ['Pidgeot', 'Corviknight'],
 		num: 27,
@@ -378,7 +377,7 @@ export const Pokedex: {[k: string]: ModdedSpeciesData} = {
 		weightkg: 12.55,
 		evos: ["Gastrodon", "Ferrothorn"],
 	},
-	//slate 7
+	// slate 7
 	landmaldotherian: {
 		fusion: ['Landorus', 'Armaldo'],
 		num: 33,
@@ -415,15 +414,7 @@ export const Pokedex: {[k: string]: ModdedSpeciesData} = {
 		abilities: {0: "Magic Missile"},
 		weightkg: 13.5,
 	},
-	
-	
-	
-	
-	
-	
-	
-	
-	//silvino formes
+	// silvino formes
 	silvinobug: {
 		fusion: ['Audino', 'Silvally'],
 		num: 14,
@@ -832,5 +823,4 @@ export const Pokedex: {[k: string]: ModdedSpeciesData} = {
 		battleOnly: "Silvino-Water",
 		requiredItem: "Audinite",
 	},
-
 };
