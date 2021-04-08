@@ -7,15 +7,18 @@ export const Scripts: {[k: string]: ModdedBattleScriptsData} = {
 				const learnsetFusionList = []; // list of pokemon whose learnsets need to be fused
 				for (let name of fusionEntry.fusion) {
 					let prevo = true;
-					while (prevo) {// make sure prevos of both fused pokemon are added to the list
+					while (prevo) { // make sure prevos of both fused pokemon are added to the list
 						learnsetFusionList.push(name);
 						const dexEntry = this.dataCache.Pokedex[this.toID(name)];
 						if (dexEntry.prevo) name = dexEntry.prevo;
 						else prevo = false;
 					}
 				}
-				if (!this.dataCache.Learnsets[id]) this.dataCache.Learnsets[id] = { learnset: {}};// create a blank learnset entry so we don't need a learnsets file
-				for (let name of learnsetFusionList) {
+				if (!this.dataCache.Learnsets[id]) {
+					this.dataCache.Learnsets[id] = {learnset: {}};
+					// create a blank learnset entry so we don't need a learnsets file
+				}
+				for (const name of learnsetFusionList) {
 					const learnset = this.dataCache.Learnsets[this.toID(name)].learnset;// get the learnset of each pokemon in the list
 					for (const moveid in learnset) {
 						if (this.dataCache.Moves[moveid].isNonstandard === 'Past') continue; // exclude dexited moves (I hope!)
@@ -102,7 +105,7 @@ export const Scripts: {[k: string]: ModdedBattleScriptsData} = {
 		// Included for Magnetic Waves:
 		// Levitate is checked for when running groundedness (ground immunity, iron ball, etc)
 		// So we manually add a check for Magnetic Waves here as well,
-		// Including a diffrent activation message 
+		// Including a diffrent activation message
 		// so that the game doesn't report it as having Levitate when it procs.
 		runImmunity(type: string, message?: string | boolean) {
 			if (!type || type === '???') return true;
@@ -136,7 +139,7 @@ export const Scripts: {[k: string]: ModdedBattleScriptsData} = {
 			}
 			return true;
 		},
-		
+
 		isGrounded(negateImmunity = false) {
 			if ('gravity' in this.battle.field.pseudoWeather) return true;
 			if ('ingrain' in this.volatiles && this.battle.gen >= 4) return true;
@@ -145,7 +148,10 @@ export const Scripts: {[k: string]: ModdedBattleScriptsData} = {
 			if (item === 'ironball') return true;
 			// If a Fire/Flying type uses Burn Up and Roost, it becomes ???/Flying-type, but it's still grounded.
 			if (!negateImmunity && this.hasType('Flying') && !('roost' in this.volatiles)) return false;
-			if ((this.hasAbility('levitate') || this.hasAbility('magneticwaves'))&& !this.battle.suppressingAttackEvents()) return null;
+			if (
+				(this.hasAbility('levitate') || this.hasAbility('magneticwaves')) &&
+				!this.battle.suppressingAttackEvents()
+			) return null;
 			if ('magnetrise' in this.volatiles) return false;
 			if ('telekinesis' in this.volatiles) return false;
 			return item !== 'airballoon';
