@@ -150,26 +150,6 @@ export const Scripts: {[k: string]: ModdedBattleScriptsData} = {
 			if ('telekinesis' in this.volatiles) return false;
 			return item !== 'airballoon';
 		},
-		
-		ignoringAbility() {
-			// Check if any active pokemon have the ability Neutralizing Gas
-			let neutralizinggas = false;
-			for (const pokemon of this.battle.getAllActive()) {
-				// can't use hasAbility because it would lead to infinite recursion
-				if (
-					pokemon.ability === ('neutralizinggas' as ID) && !pokemon.volatiles['gastroacid'] &&
-					!pokemon.abilityData.ending
-				) {
-					neutralizinggas = true;
-					break;
-				}
-			}
-			return !!(
-				(this.battle.gen >= 5 && !this.isActive) ||
-				((this.volatiles['gastroacid'] || (neutralizinggas && this.ability !== ('neutralizinggas' as ID))) &&
-				 !this.getAbility().isPermanent))
-			);
-		}
 
 		// Included for Therapeutic:
 		// Burn status' Atk reduction and Guts users' immunity to it is hard-coded in battle.ts,
