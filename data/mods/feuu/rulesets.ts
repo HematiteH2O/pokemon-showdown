@@ -21,7 +21,6 @@ export const Formats: {[k: string]: FormatData} = {
 		desc: 'When a new Pokémon switches in for the first time, information about its types, stats and Abilities is displayed to both players.',
 		onSwitchIn(pokemon) {
 			let species = this.dex.getSpecies(pokemon.species.name);
-			let switchedIn = pokemon.switchedIn;
 			if (pokemon.illusion) {
 				species = this.dex.getSpecies(pokemon.illusion.species.name);
 				if (!pokemon.illusion.isModded) return;
@@ -64,7 +63,7 @@ export const Formats: {[k: string]: FormatData} = {
 					this.add('-start', target, 'typechange', target.getTypes(true).join('/'), '[silent]');
 					if (!target.switchedIn) {
 						target.switchedIn = true;
-						let species = this.dex.getSpecies(target.species.name);
+						const species = this.dex.getSpecies(target.species.name);
 						let abilities = species.abilities[0];
 						if (species.abilities[1]) {
 							abilities += ` / ${species.abilities[1]}`;
