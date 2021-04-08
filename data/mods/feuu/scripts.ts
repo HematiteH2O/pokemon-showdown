@@ -1,110 +1,109 @@
 export const Scripts: {[k: string]: ModdedBattleScriptsData} = {
-	init(){ 
+	init() {
 		// Automatically construct fusion learnsets! (Thank u scoopapa)
-		for (const id in this.dataCache.Pokedex) {//check the dex for fusions
+		for (const id in this.dataCache.Pokedex) { // check the dex for fusions
 			const fusionEntry = this.dataCache.Pokedex[id];
-			if (fusionEntry.fusion) {//if the pokedex entry has a fusion field, it's a fusion
-				const learnsetFusionList = [];//list of pokemon whose learnsets need to be fused
+			if (fusionEntry.fusion) { // if the pokedex entry has a fusion field, it's a fusion
+				const learnsetFusionList = []; // list of pokemon whose learnsets need to be fused
 				for (let name of fusionEntry.fusion) {
 					let prevo = true;
-					while (prevo) {//make sure prevos of both fused pokemon are added to the list
+					while (prevo) {// make sure prevos of both fused pokemon are added to the list
 						learnsetFusionList.push(name);
 						const dexEntry = this.dataCache.Pokedex[this.toID(name)];
 						if (dexEntry.prevo) name = dexEntry.prevo;
 						else prevo = false;
 					}
 				}
-				if (!this.dataCache.Learnsets[id]) this.dataCache.Learnsets[id] = { learnset: {}};//create a blank learnset entry so we don't need a learnsets file
-				for (let name of learnsetFusionList) {					
-					const learnset = this.dataCache.Learnsets[this.toID(name)].learnset;//get the learnset of each pokemon in the list
+				if (!this.dataCache.Learnsets[id]) this.dataCache.Learnsets[id] = { learnset: {}};// create a blank learnset entry so we don't need a learnsets file
+				for (let name of learnsetFusionList) {
+					const learnset = this.dataCache.Learnsets[this.toID(name)].learnset;// get the learnset of each pokemon in the list
 					for (const moveid in learnset) {
-						if (this.dataCache.Moves[moveid].isNonstandard === 'Past') continue; //exclude dexited moves (I hope!) 
-						this.modData('Learnsets', id).learnset[moveid] = ['8L1'];//all moves are compatible with the fusion's only ability, so just set it to 8L1
+						if (this.dataCache.Moves[moveid].isNonstandard === 'Past') continue; // exclude dexited moves (I hope!)
+						this.modData('Learnsets', id).learnset[moveid] = ['8L1'];// all moves are compatible with the fusion's only ability, so just set it to 8L1
 					}
 				}
 			}
 		}
-		
-		//Now, case-by-case learnset revisions: 
-		//Behemoth Bash and Behemoth Blade are added automatically to the Crowned dogs somewhere,
-		//so we will simulate that here, instead of actually editing that. 
+		// Now, case-by-case learnset revisions:
+		// Behemoth Bash and Behemoth Blade are added automatically to the Crowned dogs somewhere,
+		// so we will simulate that here, instead of actually editing that.
 		this.modData('Learnsets', 'yaciancrowned').learnset.behemothblade = ['7L1'];
 		this.modData('Learnsets', 'igglyzentacrowned').learnset.behemothbash = ['7L1'];
 		delete this.modData('Learnsets', 'yaciancrowned').learnset.ironhead;
 		delete this.modData('Learnsets', 'igglyzentacrowned').learnset.ironhead;
 	},
-	
+
 	actions: {
-  	canMegaEvo(pokemon) {
-	  	const altForme = pokemon.baseSpecies.otherFormes && this.dex.getSpecies(pokemon.baseSpecies.otherFormes[0]);
-	  	const item = pokemon.getItem();
-	  	if (
-	  		altForme?.isMega && altForme?.requiredMove &&
-	  		pokemon.baseMoves.includes(this.toID(altForme.requiredMove)) && !item.zMove
-	  	) {
-	  		return altForme.name;
-	  	}
-	  	if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Bug") {
-	  		return "Silvino-Bug-Mega";
-	  	}
-	  	if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Dark") {
-	  		return "Silvino-Dark-Mega";
-	  	}
-	  	if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Dragon") {
-	  		return "Silvino-Dragon-Mega";
-	  	}
-	  	if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Electric") {
-	  		return "Silvino-Electric-Mega";
-	  	}
-  		if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Fairy") {
-  			return "Silvino-Fairy-Mega";
-  		}
-  		if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Fighting") {
-  			return "Silvino-Fighting-Mega";
-  		}
-  		if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Fire") {
-  			return "Silvino-Fire-Mega";
-  		}
-  		if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Flying") {
-  			return "Silvino-Flying-Mega";
-  		}
-  		if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Ghost") {
-  			return "Silvino-Ghost-Mega";
-  		}
-  		if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Grass") {
-  			return "Silvino-Grass-Mega";
-	  	}
-	  	if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Ground") {
-	  		return "Silvino-Ground-Mega";
-	  	}
-	  	if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Ice") {
-	  		return "Silvino-Ice-Mega";
-	  	}
-		  if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Poison") {
-		  	return "Silvino-Poison-Mega";
-		  }
-		  if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Psychic") {
-		  	return "Silvino-Psychic-Mega";
-		  }
-	  	if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Rock") {
-	  		return "Silvino-Rock-Mega";
-	  	}
-	  	if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Steel") {
-	  		return "Silvino-Steel-Mega";
-	  	}
-	  	if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Water") {
-	  		return "Silvino-Water-Mega";
-	  	}
-	  	return item.megaStone;
-  	},
-  },
+		canMegaEvo(pokemon) {
+			const altForme = pokemon.baseSpecies.otherFormes && this.dex.getSpecies(pokemon.baseSpecies.otherFormes[0]);
+			const item = pokemon.getItem();
+			if (
+				altForme?.isMega && altForme?.requiredMove &&
+				pokemon.baseMoves.includes(this.toID(altForme.requiredMove)) && !item.zMove
+			) {
+				return altForme.name;
+			}
+			if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Bug") {
+				return "Silvino-Bug-Mega";
+			}
+			if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Dark") {
+				return "Silvino-Dark-Mega";
+			}
+			if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Dragon") {
+				return "Silvino-Dragon-Mega";
+			}
+			if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Electric") {
+				return "Silvino-Electric-Mega";
+			}
+			if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Fairy") {
+				return "Silvino-Fairy-Mega";
+			}
+			if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Fighting") {
+				return "Silvino-Fighting-Mega";
+			}
+			if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Fire") {
+				return "Silvino-Fire-Mega";
+			}
+			if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Flying") {
+				return "Silvino-Flying-Mega";
+			}
+			if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Ghost") {
+				return "Silvino-Ghost-Mega";
+			}
+			if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Grass") {
+				return "Silvino-Grass-Mega";
+			}
+			if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Ground") {
+				return "Silvino-Ground-Mega";
+			}
+			if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Ice") {
+				return "Silvino-Ice-Mega";
+			}
+			if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Poison") {
+				return "Silvino-Poison-Mega";
+			}
+			if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Psychic") {
+				return "Silvino-Psychic-Mega";
+			}
+			if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Rock") {
+				return "Silvino-Rock-Mega";
+			}
+			if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Steel") {
+				return "Silvino-Steel-Mega";
+			}
+			if (item.name === "Audinite" && pokemon.baseSpecies.name === "Silvino-Water") {
+				return "Silvino-Water-Mega";
+			}
+			return item.megaStone;
+		},
+	},
 
 	pokemon: {
-		//Included for Magnetic Waves:
-		//Levitate is checked for when running groundedness (ground immunity, iron ball, etc)
-		//So we manually add a check for Magnetic Waves here as well,
-		//Including a diffrent activation message 
-		//so that the game doesn't report it as having Levitate when it procs.
+		// Included for Magnetic Waves:
+		// Levitate is checked for when running groundedness (ground immunity, iron ball, etc)
+		// So we manually add a check for Magnetic Waves here as well,
+		// Including a diffrent activation message 
+		// so that the game doesn't report it as having Levitate when it procs.
 		runImmunity(type: string, message?: string | boolean) {
 			if (!type || type === '???') return true;
 			if (!(type in this.battle.dex.data.TypeChart)) {
@@ -138,7 +137,6 @@ export const Scripts: {[k: string]: ModdedBattleScriptsData} = {
 			return true;
 		},
 		
-		
 		isGrounded(negateImmunity = false) {
 			if ('gravity' in this.battle.field.pseudoWeather) return true;
 			if ('ingrain' in this.volatiles && this.battle.gen >= 4) return true;
@@ -153,32 +151,29 @@ export const Scripts: {[k: string]: ModdedBattleScriptsData} = {
 			return item !== 'airballoon';
 		},
 		
-		
 		ignoringAbility() {
 			// Check if any active pokemon have the ability Neutralizing Gas
 			let neutralizinggas = false;
 			for (const pokemon of this.battle.getAllActive()) {
 				// can't use hasAbility because it would lead to infinite recursion
-				if (pokemon.ability === ('neutralizinggas' as ID) && !pokemon.volatiles['gastroacid'] &&
-					!pokemon.abilityData.ending) {
+				if (
+					pokemon.ability === ('neutralizinggas' as ID) && !pokemon.volatiles['gastroacid'] &&
+					!pokemon.abilityData.ending
+				) {
 					neutralizinggas = true;
 					break;
 				}
 			}
-
 			return !!(
 				(this.battle.gen >= 5 && !this.isActive) ||
 				((this.volatiles['gastroacid'] || (neutralizinggas && this.ability !== ('neutralizinggas' as ID))) &&
-				!this.getAbility().isPermanent
-				)
+				 !this.getAbility().isPermanent))
 			);
 		}
-	},
-	
-	
-		//Included for Therapeutic:
-		//Burn status' Atk reduction and Guts users' immunity to it is hard-coded in battle.ts,
-		//So we have to bypass it manually here.
+
+		// Included for Therapeutic:
+		// Burn status' Atk reduction and Guts users' immunity to it is hard-coded in battle.ts,
+		// So we have to bypass it manually here.
 		modifyDamage(
 			baseDamage: number, pokemon: Pokemon, target: Pokemon, move: ActiveMove, suppressMessages = false
 		) {
@@ -236,7 +231,10 @@ export const Scripts: {[k: string]: ModdedBattleScriptsData} = {
 
 			if (isCrit && !suppressMessages) this.add('-crit', target);
 
-			if (pokemon.status === 'brn' && move.category === 'Physical' && !(pokemon.hasAbility('guts') || pokemon.hasAbility('therapeutic'))) {
+			if (
+				pokemon.status === 'brn' && move.category === 'Physical' &&
+				!(pokemon.hasAbility('guts') || pokemon.hasAbility('therapeutic'))
+			) {
 				if (this.gen < 6 || move.id !== 'facade') {
 					baseDamage = this.modify(baseDamage, 0.5);
 				}
@@ -259,5 +257,5 @@ export const Scripts: {[k: string]: ModdedBattleScriptsData} = {
 			// ...but 16-bit truncation happens even later, and can truncate to 0
 			return tr(baseDamage, 16);
 		},
-	
-}; 
+	},
+};
