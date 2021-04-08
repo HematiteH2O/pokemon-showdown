@@ -1,5 +1,5 @@
 export const Conditions: {[k: string]: ModdedConditionData} = {
-	//Status conditions slightly tweaked to exclude Therapeutic
+	// Status conditions slightly tweaked to exclude Therapeutic
 	brn: {
 		name: 'brn',
 		effectType: 'Status',
