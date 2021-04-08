@@ -338,7 +338,7 @@ export const Abilities: {[k: string]: ModdedAbilityData} = {
 					ignore = true;
 					return;
 				}
-			} 
+			}
 			if ((move.target === 'allAdjacentFoes' || move.target === 'allAdjacent') && ignore) return;
 			// END PLACEHOLDER
 			move.infiltrates = true;
@@ -466,8 +466,8 @@ export const Abilities: {[k: string]: ModdedAbilityData} = {
 		shortDesc: "On switch-in, swaps ability with the opponent.",
 		onStart(pokemon) {
 			if (
-				(pokemon.side.foe.active.some(
-					foeActive => foeActive && this.isAdjacent(pokemon, foeActive) && foeActive.ability === 'noability')
+				pokemon.side.foe.active.some(
+					foeActive => foeActive && this.isAdjacent(pokemon, foeActive) && foeActive.ability === 'noability'
 				) || pokemon.species.id !== 'yaciancrowned'
 			) {
 				this.effectData.gaveUp = true;
