@@ -1,4 +1,4 @@
-export const Scripts: {[k: string]: ModdedBattleScriptsData} = {
+export const Scripts: ModdedBattleScriptsData = {
 	init() {
 		// Automatically construct fusion learnsets! (Thank u scoopapa)
 		for (const id in this.dataCache.Pokedex) { // check the dex for fusions
