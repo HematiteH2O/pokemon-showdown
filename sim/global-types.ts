@@ -326,7 +326,7 @@ type ModdedBattleSide = never;
 
 interface ModdedBattlePokemon {
 	inherit?: true;
-	lostItemForDelibird?: Item | null;
+	switchedIn?: Item | null;
 	boostBy?: (this: Pokemon, boost: SparseBoostsTable) => boolean | number;
 	calculateStat?: (this: Pokemon, statName: StatNameExceptHP, boost: number, modifier?: number) => number;
 	getAbility?: (this: Pokemon) => Ability;
