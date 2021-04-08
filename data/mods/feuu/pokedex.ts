@@ -46,7 +46,6 @@ export const Pokedex: {[k: string]: ModdedSpeciesData} = {
 		abilities: {0: "Surgeon Eye"},
 		weightkg: 69.7,
 	},
-	
 	// Set 2
 	flaant: {
 		fusion: ['Flapple', 'Durant'],
@@ -126,7 +125,6 @@ export const Pokedex: {[k: string]: ModdedSpeciesData} = {
 		abilities: {0: "Porous Fat"},
 		weightkg: 213,
 	},
-	
 	// Set 3
 	pigapult: {
 		fusion: ['Pignite', 'Dragapult'],
@@ -147,7 +145,7 @@ export const Pokedex: {[k: string]: ModdedSpeciesData} = {
 		weightkg: 65.8,
 		otherFormes: [
 			"Silvino-Bug", "Silvino-Dark", "Silvino-Dragon", "Silvino-Electric", "Silvino-Fairy", "Silvino-Fighting", "Silvino-Fire", "Silvino-Flying", "Silvino-Ghost", "Silvino-Grass", "Silvino-Ground", "Silvino-Ice", "Silvino-Poison", "Silvino-Psychic", "Silvino-Rock", "Silvino-Steel", "Silvino-Water",
-			"Silvino-Bug-Mega", "Silvino-Dark-Mega", "Silvino-Dragon-Mega", "Silvino-Electric-Mega", "Silvino-Fairy-Mega", "Silvino-Fighting-Mega", "Silvino-Fire-Mega", "Silvino-Flying-Mega", "Silvino-Ghost-Mega", "Silvino-Grass-Mega", "Silvino-Ground-Mega", "Silvino-Ice-Mega", "Silvino-Poison-Mega", "Silvino-Psychic-Mega", "Silvino-Rock-Mega", "Silvino-Steel-Mega", "Silvino-Water-Mega"
+			"Silvino-Bug-Mega", "Silvino-Dark-Mega", "Silvino-Dragon-Mega", "Silvino-Electric-Mega", "Silvino-Fairy-Mega", "Silvino-Fighting-Mega", "Silvino-Fire-Mega", "Silvino-Flying-Mega", "Silvino-Ghost-Mega", "Silvino-Grass-Mega", "Silvino-Ground-Mega", "Silvino-Ice-Mega", "Silvino-Poison-Mega", "Silvino-Psychic-Mega", "Silvino-Rock-Mega", "Silvino-Steel-Mega", "Silvino-Water-Mega",
 		],
 		formeOrder: [
 			"Silvino", "Silvino-Fighting", "Silvino-Flying", "Silvino-Poison", "Silvino-Ground", "Silvino-Rock", "Silvino-Bug", "Silvino-Ghost", "Silvino-Steel",
@@ -307,7 +305,6 @@ export const Pokedex: {[k: string]: ModdedSpeciesData} = {
 		requiredItem: "Red Orb",
 		battleOnly: "Grousle",
 	},
-	
 	// slate 6
 	corveot: {
 		fusion: ['Pidgeot', 'Corviknight'],
