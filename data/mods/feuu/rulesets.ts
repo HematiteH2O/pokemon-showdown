@@ -88,7 +88,7 @@ export const Formats: {[k: string]: FormatData} = {
 						}
 						buf += `</span></li><li style="clear: both"></li></ul>`;
 						this.add(`raw|${buf}`);
-					},
+					}
 				} else {
 					const types = target.baseSpecies.types;
 					if (target.getTypes().join() === types.join()) {
