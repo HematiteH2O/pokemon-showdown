@@ -5,17 +5,19 @@ export const Abilities: {[k: string]: ModdedAbilityData} = {
 		name: "Porous",
 		shortDesc: "Absorbs self-KO moves and Water-type moves, and restores 1/4 max HP.",
 		onTryHit(target, source, move) {
-			if (target !== source && (move.type === 'Water' || ['explosion', 'mindblown', 'mistyexplosion', 'selfdestruct'].includes(move.id))) {
+			if (
+				target !== source &&
+				(move.type === 'Water' || ['explosion', 'mindblown', 'mistyexplosion', 'selfdestruct'].includes(move.id))
+			) {
 				if (!this.heal(target.baseMaxhp / 4)) {
 					this.add('-immune', target, '[from] ability: Porous');
 				}
 				return null;
 			}
-			
 		},
 		onAnyDamage(damage, target, source, effect) {
 			if (effect && (effect.id === 'aftermath')) {
-				this.heal(this.effectData.target.baseMaxhp / 4)
+				this.heal(this.effectData.target.baseMaxhp / 4);
 				this.add('-immune', this.effectData.target, '[from] ability: Porous');
 			}
 		},
@@ -27,12 +29,10 @@ export const Abilities: {[k: string]: ModdedAbilityData} = {
 		onModifyCritRatio(critRatio, source, target) {
 			// PLACEHOLDER FOR STURDY MOLD
 			let ignore = false;
-
-				if (target.hasAbility('sturdymold')) {
-					ignore = true;
-					return;
-				} 
-
+			if (target.hasAbility('sturdymold')) {
+				ignore = true;
+				return;
+			}
 			if (ignore) return;
 			// END PLACEHOLDER
 			if (target && ['psn', 'tox', 'brn'].includes(target.status)) return 5;
@@ -143,12 +143,13 @@ export const Abilities: {[k: string]: ModdedAbilityData} = {
 			}
 			if (move.flags['contact'] && !target.hp) {
 				// I dunno how to make Porous differentiate between the two kinds of damage this ability can deal,
-				// So I'm just gonna CHEAT because i am a HACK and a fraud. 
+				// So I'm just gonna CHEAT because i am a HACK and a fraud.
 				if (source.hasAbility('Porous')) {
 					this.add('-ability', source, 'Porous');
 					this.heal(source.baseMaxhp / 4, source, target, move);
+				} else {
+					this.damage(source.baseMaxhp / 4, source, target);
 				}
-				else this.damage(source.baseMaxhp / 4, source, target);
 			}
 		},
 	},
@@ -208,7 +209,10 @@ export const Abilities: {[k: string]: ModdedAbilityData} = {
 				}
 				const species = curPoke.species;
 				// pokemon can't get Natural Cure
-				if (!Object.values(species.abilities).includes('Natural Cure') && !Object.values(species.abilities).includes('Natural Heal')) {
+				if (
+					!Object.values(species.abilities).includes('Natural Cure') &&
+					!Object.values(species.abilities).includes('Natural Heal')
+				) {
 					// this.add('-message', "" + curPoke + " skipped: no Natural Cure");
 					continue;
 				}
@@ -278,7 +282,7 @@ export const Abilities: {[k: string]: ModdedAbilityData} = {
 		},
 		onSwitchOut(pokemon) {
 			for (const moveSlot of pokemon.moveSlots) {
-				moveSlot.pp += Math.floor(moveSlot.maxpp / 3); 
+				moveSlot.pp += Math.floor(moveSlot.maxpp / 3);
 				if (moveSlot.pp > moveSlot.maxpp) moveSlot.pp = moveSlot.maxpp;
 			}
 		},
@@ -302,12 +306,11 @@ export const Abilities: {[k: string]: ModdedAbilityData} = {
 			}
 		},
 	},
-	
 	// set 3
 	nullsystem: {
 		id: "nullsystem",
 		name: "Null System",
-		shortDesc: "This Pokemon can be any type (selected in teambuilder)."
+		shortDesc: "This Pokemon can be any type (selected in teambuilder).",
 	},
 	inthicktrator: {
 		id: "inthicktrator",
@@ -333,9 +336,8 @@ export const Abilities: {[k: string]: ModdedAbilityData} = {
 			for (const target of pokemon.side.foe.active) {
 				if (target.hasAbility('sturdymold')) {
 					ignore = true;
-					console.log("Target has Sturdy Mold");
 					return;
-				} else console.log("Target does not have Sturdy Mold");
+				}
 			} 
 			if ((move.target === 'allAdjacentFoes' || move.target === 'allAdjacent') && ignore) return;
 			// END PLACEHOLDER
@@ -438,7 +440,7 @@ export const Abilities: {[k: string]: ModdedAbilityData} = {
 					ignore = true;
 					return;
 				}
-			} 
+			}
 			if ((move.target === 'allAdjacentFoes' || move.target === 'allAdjacent') && ignore) return;
 			// END PLACEHOLDER
 			// PLACEHOLDER
@@ -463,10 +465,11 @@ export const Abilities: {[k: string]: ModdedAbilityData} = {
 		name: "Pillage",
 		shortDesc: "On switch-in, swaps ability with the opponent.",
 		onStart(pokemon) {
-			if ((pokemon.side.foe.active.some(
-				foeActive => foeActive && this.isAdjacent(pokemon, foeActive) && foeActive.ability === 'noability'
-			))
-			|| pokemon.species.id !== 'yaciancrowned') {
+			if (
+				(pokemon.side.foe.active.some(
+					foeActive => foeActive && this.isAdjacent(pokemon, foeActive) && foeActive.ability === 'noability')
+				) || pokemon.species.id !== 'yaciancrowned'
+			) {
 				this.effectData.gaveUp = true;
 			}
 		},
@@ -489,7 +492,6 @@ export const Abilities: {[k: string]: ModdedAbilityData} = {
 				}
 				target.setAbility('pillage', pokemon);
 				pokemon.setAbility(ability);
-				
 				this.add('-activate', pokemon, 'ability: Pillage');
 				this.add('-activate', pokemon, 'Skill Swap', '', '', '[of] ' + target);
 				this.add('-activate', pokemon, 'ability: ' + ability.name);
@@ -511,8 +513,8 @@ export const Abilities: {[k: string]: ModdedAbilityData} = {
 				if (target.hasAbility('sturdymold')) {
 					ignore = true;
 					return;
-				} 
-			} 
+				}
+			}
 			if ((move.target === 'allAdjacentFoes' || move.target === 'allAdjacent') && ignore) return;
 			// END PLACEHOLDER
 			const noModifyType = [
@@ -540,8 +542,8 @@ export const Abilities: {[k: string]: ModdedAbilityData} = {
 				if (target.hasAbility('sturdymold')) {
 					ignore = true;
 					return;
-				} 
-			} 
+				}
+			}
 			if ((move.target === 'allAdjacentFoes' || move.target === 'allAdjacent') && ignore) return;
 			// END PLACEHOLDER
 			if (!move.ignoreImmunity) move.ignoreImmunity = {};
@@ -570,8 +572,8 @@ export const Abilities: {[k: string]: ModdedAbilityData} = {
 				return target.hp - 1;
 			}
 		},
-		// I'm gonna figure out how to code this legit at some point, I swear, 
-		// but for now, since we have so few abilities, 
+		// I'm gonna figure out how to code this legit at some point, I swear,
+		// but for now, since we have so few abilities,
 		// I'm just gonna hard-code it into everything.
 	},
 	therapeutic: {
@@ -579,7 +581,7 @@ export const Abilities: {[k: string]: ModdedAbilityData} = {
 		name: "Therapeutic",
 		shortDesc: "Heals 1/8 max HP each turn when statused. Ignores non-Sleep effects of status.",
 		// Burn attack reduction bypass hard-coded in scripts.ts (in battle: {})
-		// There's probably a more elegant way to ignore the effects of status 
+		// There's probably a more elegant way to ignore the effects of status
 		// that isn't hard-coding a check for the ability into every status condition,
 		// But that works so that is what I did.
 		onResidualSubOrder: 1,
@@ -624,8 +626,8 @@ export const Abilities: {[k: string]: ModdedAbilityData} = {
 				if (target.hasAbility('sturdymold')) {
 					ignore = true;
 					return;
-				} 
-			} 
+				}
+			}
 			if ((move.target === 'allAdjacentFoes' || move.target === 'allAdjacent') && ignore) return;
 			// END PLACEHOLDER
 			return this.modify(atk, 1.5);
@@ -649,8 +651,8 @@ export const Abilities: {[k: string]: ModdedAbilityData} = {
 				if (target.hasAbility('sturdymold')) {
 					ignore = true;
 					return;
-				} 
-			} 
+				}
+			}
 			if ((move.target === 'allAdjacentFoes' || move.target === 'allAdjacent') && ignore) return;
 			// END PLACEHOLDER
 			if (!move.ignoreImmunity) move.ignoreImmunity = {};
@@ -691,10 +693,16 @@ export const Abilities: {[k: string]: ModdedAbilityData} = {
 	noguard: { // Edited for Sturdy Mold
 		onAnyInvulnerabilityPriority: 1,
 		onAnyInvulnerability(target, source, move) {
-			if (move && (source === this.effectData.target || target === this.effectData.target) && !target.hasAbility('sturdymold')) return 0;
+			if (
+				move && (source === this.effectData.target || target === this.effectData.target) &&
+				!target.hasAbility('sturdymold')
+			) return 0;
 		},
 		onAnyAccuracy(accuracy, target, source, move) {
-			if (move && (source === this.effectData.target || target === this.effectData.target) && !target.hasAbility('sturdymold')) {
+			if (
+				move && (source === this.effectData.target || target === this.effectData.target) &&
+				!target.hasAbility('sturdymold')
+			) {
 				return true;
 			}
 			return accuracy;
@@ -762,7 +770,7 @@ export const Abilities: {[k: string]: ModdedAbilityData} = {
 			if (pokemon.status) {
 				this.add('-activate', pokemon, 'ability: Leafy Armor');
 				pokemon.cureStatus();
-				this.boost({def: -1, spe: 2}, pokemon, pokemon); 
+				this.boost({def: -1, spe: 2}, pokemon, pokemon);
 			}
 		},
 	},
